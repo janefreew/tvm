@@ -286,7 +286,7 @@ def tune_and_evaluate(tune_option, search_policy):
 
 # Notice: We do not run the tuning in our webpage server since it takes too long.
 # Uncomment the following line to run it by yourself.
-# tune_and_evaluate(tune_option, search_policy)
+tune_and_evaluate(tune_option, search_policy)
 
 
 ######################################################################

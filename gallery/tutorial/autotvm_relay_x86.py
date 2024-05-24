@@ -86,13 +86,11 @@ from tvm.contrib import graph_executor
 #   :ref:`Compile Deep Learning Models <tutorial-frontend>` section of the TVM
 #   Documentation.
 
-model_url = (
-    "https://github.com/onnx/models/raw/main/"
-    "vision/classification/resnet/model/"
-    "resnet50-v2-7.onnx"
-)
-
-model_path = download_testdata(model_url, "resnet50-v2-7.onnx", module="onnx")
+# model_url = (
+#     "https://github.com/onnx/models/raw/main/vision/classification/resnet/model/resnet50-v2-7.onnx"
+# )
+model_path="/Users/cunyang/model_zoo/resnet18.onnx"
+# model_path = download_testdata(model_url, "resnet50-v2-7.onnx", module="onnx")
 onnx_model = onnx.load(model_path)
 
 # Seed numpy's RNG to get consistent results
@@ -162,7 +160,7 @@ target = "llvm"
 
 # The input name may vary across model types. You can use a tool
 # like Netron to check input names
-input_name = "data"
+input_name = "input.1"
 shape_dict = {input_name: img_data.shape}
 
 mod, params = relay.frontend.from_onnx(onnx_model, shape_dict)

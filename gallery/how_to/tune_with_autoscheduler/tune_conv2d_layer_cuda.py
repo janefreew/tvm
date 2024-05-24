@@ -70,7 +70,7 @@ def conv2d_layer(N, H, W, CO, CI, KH, KW, stride, padding):
 # ^^^^^^^^^^^^^^^^^^^^^^
 # We then create a search task for the last convolution layer in the resnet.
 
-target = tvm.target.Target("cuda")
+target = tvm.target.Target("llvm")
 
 # Use the last layer in ResNet-50
 N, H, W, CO, CI, KH, KW, strides, padding = 1, 7, 7, 512, 512, 3, 3, (1, 1), (1, 1)
@@ -102,10 +102,12 @@ print(task.compute_dag)
 #   :any:`auto_scheduler.LocalRPCMeasureContext` for more parameters.
 
 log_file = "conv2d.json"
-measure_ctx = auto_scheduler.LocalRPCMeasureContext(min_repeat_ms=300)
+# measure_ctx = auto_scheduler.LocalRPCMeasureContext(min_repeat_ms=300)
+measure_ctx = auto_scheduler.LocalRunner()
 tune_option = auto_scheduler.TuningOptions(
     num_measure_trials=10,  # change this to 1000 to achieve the best performance
-    runner=measure_ctx.runner,
+    # runner=measure_ctx.runner,
+    runner=measure_ctx,
     measure_callbacks=[auto_scheduler.RecordToFile(log_file)],
     verbose=2,
 )
@@ -121,7 +123,7 @@ tune_option = auto_scheduler.TuningOptions(
 # Run auto-tuning (search)
 # We do not run the tuning in our webpage server since it takes too long.
 # Uncomment the following line to run it by yourself.
-# task.tune(tune_option)
+task.tune(tune_option)
 # Apply the best schedule
 sch, args = task.apply_best(log_file)
 
@@ -150,7 +152,9 @@ bias_np = np.random.uniform(size=(1, CO, 1, 1)).astype(np.float32)
 conv_np = conv2d_nchw_python(data_np, weight_np, strides, padding)
 out_np = np.maximum(conv_np + bias_np, 0.0)
 
-dev = tvm.cuda()
+dev = tvm.cpu()
+# dev = tvm.cuda()
+# dev = tvm.metal()
 data_tvm = tvm.nd.array(data_np, device=dev)
 weight_tvm = tvm.nd.array(weight_np, device=dev)
 bias_tvm = tvm.nd.array(bias_np, device=dev)
@@ -182,8 +186,8 @@ print(
 print("Equivalent python schedule:")
 print(task.print_best(log_file, print_mode="schedule"))
 
-print("CUDA source code:")
-print(task.print_best(log_file, print_mode="cuda"))
+# print("CUDA source code:")
+# print(task.print_best(log_file, print_mode="cuda"))
 
 ######################################################################
 # A more complicated example is to resume the search.

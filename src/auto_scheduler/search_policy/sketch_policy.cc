@@ -314,6 +314,9 @@ Array<State> SketchPolicyNode::SearchOneRound(int num_random_states, Array<State
 Array<State> SketchPolicyNode::GenerateSketches() {
   const State& init_state = search_task->compute_dag->init_state;
 
+  std::cout << "init_state" << std::endl;
+  std::cout << init_state.ToStr();
+
   // Two ping pong buffers to avoid copy
   Array<State> states_buf1{init_state}, states_buf2;
   Array<State>* pnow = &states_buf1;
@@ -378,6 +381,15 @@ Array<State> SketchPolicyNode::GenerateSketches() {
   }
 
   StdCout(verbose) << "Generate Sketches\t\t#s: " << out_states.size() << std::endl;
+
+  for(auto x : out_states){
+
+    std::cout << "------------out_states" << std::endl;
+    std::cout << x.ToStr();
+    std::cout << std::endl;
+
+
+  }
   return out_states;
 }
 
