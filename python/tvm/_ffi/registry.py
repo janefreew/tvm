@@ -245,6 +245,11 @@ def list_global_func_names():
     plist = ctypes.POINTER(ctypes.c_char_p)()
     size = ctypes.c_uint()
 
+# Use TVMFuncListGlobalNames to get global function name
+# List all the globally registered function name
+# include/tvm/runtime/c_runtime_api.h
+# ${TVM_HOME}/src/runtime/registry.cc
+
     check_call(_LIB.TVMFuncListGlobalNames(ctypes.byref(size), ctypes.byref(plist)))
     fnames = []
     for i in range(size.value):

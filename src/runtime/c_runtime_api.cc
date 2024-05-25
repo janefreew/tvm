@@ -565,7 +565,8 @@ int TVMByteArrayFree(TVMByteArray* arr) {
   delete arr;
   return 0;
 }
-
+//  typedef void * TVMFunctionHandle
+//  TVMValue* args：Python端的参数类型最终都需要转换为C++侧的TVMValue类型，它是一个联合体类型
 int TVMFuncCall(TVMFunctionHandle func, TVMValue* args, int* arg_type_codes, int num_args,
                 TVMValue* ret_val, int* ret_type_code) {
   API_BEGIN();

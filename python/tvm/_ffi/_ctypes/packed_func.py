@@ -214,7 +214,7 @@ class PackedFuncBase(object):
         if not self.is_global and _LIB is not None:
             if _LIB.TVMFuncFree(self.handle) != 0:
                 raise_last_ffi_error()
-
+# 通过FuncCall执行C++函数调用，进入C++世界，然后通过make_ret将返回结果转换为Python侧结果，回到Python世界。
     def __call__(self, *args):
         """Call the function with positional arguments
 
