@@ -1,3 +1,5 @@
+# https://xinetzone.github.io/tvm-book/tutorials/pass/dynamic2static.html
+
 import numpy as np
 import pytest
 import tvm
