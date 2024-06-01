@@ -1,0 +1,10 @@
+numpy 
+decorator 
+attrs
+typing-extensions 
+psutil 
+scipy
+tornado
+pybind11 
+cython 
+pythran
