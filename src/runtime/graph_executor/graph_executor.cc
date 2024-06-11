@@ -58,6 +58,7 @@ constexpr auto Is2DStorage = IsTextureStorage;
 /*!
  * \brief Run all the operations one by one.
  */
+// 因为已经对每一个算子其输入输出的内存 以及每个算子对应的kernel都已经准备好了，可以一个for 循环，顺序的执行每个算子
 void GraphExecutor::Run() {
   // setup the array and requirements.
   for (size_t i = 0; i < op_execs_.size(); ++i) {
@@ -74,6 +75,10 @@ void GraphExecutor::Run() {
  * executed on.
  * \param lookup_linked_param_func Linked parameter lookup function. Default is nullptr.
  */
+// json 参数解析。为每一个算子的input/output edge准备对应的memory(对应 SetupStorage)
+//   json就是计算图的表示，表示node之间的连接联系，输入、输出node、输入shape等信息，
+//   上面的代码中Load(Read)会提取json中的信息，存储在graph_executor成员变量中
+// 以及为每一个算子准别一个可调用的kernel function用来做实际的计算(对应 SetupOpExecs)
 void GraphExecutor::Init(const std::string& graph_json, tvm::runtime::Module module,
                          const std::vector<Device>& devs,
                          const PackedFunc lookup_linked_param_func) {
