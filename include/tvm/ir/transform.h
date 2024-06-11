@@ -373,6 +373,10 @@ class PassNode : public Object {
    *
    * \return The transformed module.
    */
+
+  // 从 operator 的定义可知， Pass做的主要是一个IRModule 到另一个IRModule 的变换，另外这里的这里的PassInfo 和 PassContext 分别表示每个
+  // Pass的关键信息和多个Pass执行过程中的公共上下文信息。
+
   IRModule operator()(IRModule mod) const {
     return this->operator()(std::move(mod), PassContext::Current());
   }

@@ -35,7 +35,7 @@ from ..strategy.generic import is_depthwise_conv2d
 
 # relu
 reg.register_broadcast_schedule("nn.relu")
-
+# 将实现的 Strategy 注册到nn.softmax
 # softmax
 reg.register_strategy("nn.softmax", strategy.softmax_strategy)
 

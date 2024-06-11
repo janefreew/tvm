@@ -1,4 +1,4 @@
-/*
+ /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -69,6 +69,8 @@ class CUDAModuleNode : public runtime::ModuleNode {
   int GetPropertyMask() const final {
     return ModulePropertyMask::kBinarySerializable | ModulePropertyMask::kRunnable;
   }
+
+ // 调用 cuModuleGetFunction 从cuModule中获取kernel function handle
 
   PackedFunc GetFunction(const String& name, const ObjectPtr<Object>& sptr_to_self) final;
 

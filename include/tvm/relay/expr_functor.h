@@ -58,7 +58,8 @@ class ExprFunctor;
 // functions to be overriden.
 #define EXPR_FUNCTOR_DEFAULT \
   { return VisitExprDefault_(op, std::forward<Args>(args)...); }
-
+// self : ExprFunctor的VisitExpr的实现中的 vtable(n ,this , std::forward<Args>(args)...) ,this指向ExprFunctor
+// ExprVistor::VisitExpr 方法调用的是ExprFunctor的函数，所以这里的this 指向的是ExprVisitor
 #define RELAY_EXPR_FUNCTOR_DISPATCH(OP)                                                    \
   vtable.template set_dispatch<OP>([](const ObjectRef& n, TSelf* self, Args... args) {     \
     return self->VisitExpr_(static_cast<const OP*>(n.get()), std::forward<Args>(args)...); \
@@ -88,6 +89,7 @@ class ExprFunctor<R(const Expr& n, Args...)> {
    * \param args Additional arguments.
    * \return The result of the call
    */
+  // 这个类实际上调用的是父类(ExprFunctor)的VisitExpr，而ExprFunctor的VisitExpr 的
   virtual R VisitExpr(const Expr& n, Args... args) {
     ICHECK(n.defined()) << "Found null pointer node while traversing AST. The previous pass may "
                            "have generated invalid data.";

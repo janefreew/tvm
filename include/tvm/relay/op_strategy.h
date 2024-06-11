@@ -39,6 +39,11 @@ namespace relay {
 /*!
  * \brief Operator implementation that includes compute and schedule function.
  */
+/*
+* TVM 没有为每个Ralay OP 注册compute和schedule 函数，
+* 而是为其注册fcompute和fshedule 函数,然后根据输入和属性函数，
+*  输出类型等生成对应的compute和schedule,这种compute 和schedule的组合对应了OpImplementation
+*/
 class OpImplementationNode : public Object {
  public:
   /*! \brief Compute function */
@@ -110,7 +115,7 @@ class OpSpecializationNode : public Object {
  * \brief Operator specialization class.
  */
 class OpSpecialization : public ObjectRef {
- public:
+ public: 
   /*!
    * \brief Add an implementation.
    * \param fcompute Compute function
@@ -118,6 +123,13 @@ class OpSpecialization : public ObjectRef {
    * \param name Name of the implementation
    * \param plevel Priority level of the implementation
    */
+  // 把不同的实现注册进去
+  // AddImplementation函数通过FFI 机制在Pthon 层也可以调用
+  // 大多数Relay Op都是在Python 端注册他的Strategy
+  // 我们以Relay 的nn.Softmax为例 , 它的Strategy 注册在
+  // python/tvm/relay/op/strategy/generic.py
+  // python/tvm/relay/op/strategy/cuda.py
+  // 对于Relay 的一个OP来说，有多种计算和调度的策略的
   TVM_DLL void AddImplementation(FTVMCompute fcompute, FTVMSchedule fschedule, String name,
                                  int plevel);
 

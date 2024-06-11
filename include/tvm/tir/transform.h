@@ -54,7 +54,7 @@ using tvm::transform::Sequential;
  *
  * \return The created function pass.
  */
-TVM_DLL Pass CreatePrimFuncPass(
+TVM_DLL Pass  CreatePrimFuncPass(
     const runtime::TypedPackedFunc<PrimFunc(PrimFunc, IRModule, PassContext)>& pass_func,
     int opt_level, String name, tvm::Array<String> required, bool traceable = false);
 

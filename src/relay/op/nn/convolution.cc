@@ -386,6 +386,12 @@ TVM_REGISTER_GLOBAL("relay.op.nn._make.conv2d")
                                    "nn.conv2d");
     });
 
+/*
+这里可以看到Op FInferCorrectLayout TOpPattern 用于后续优化
+ (比如算子融合Pass 就依赖了TOpPattern属性，
+ Ansor的data layout transform 依赖FInferCorrectLayout)
+*/ 
+
 RELAY_REGISTER_OP("nn.conv2d")
     .describe(R"code(2D convolution layer (e.g. spatial convolution over images).
 
@@ -407,6 +413,8 @@ with the layer input to produce a tensor of outputs.
     .add_type_rel("Conv2D", Conv2DRel)
     .set_attr<FInferCorrectLayout>("FInferCorrectLayout", ConvInferCorrectLayout<Conv2DAttrs>)
     .set_attr<TOpPattern>("TOpPattern", kOutEWiseFusable);
+
+
 
 // relay.nn.conv3d
 TVM_REGISTER_NODE_TYPE(Conv3DAttrs);
