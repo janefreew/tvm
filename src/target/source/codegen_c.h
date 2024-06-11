@@ -157,6 +157,13 @@ class CodeGenC : public ExprFunctor<void(const PrimExpr&, std::ostream&)>,
    * \param f The function to be compiled.
    */
   virtual void InitFuncState(const PrimFunc& f);
+
+  //CodegenC 类的定义重载了VisitExpr_和VisitStmt_两种函数，分别处理TIR AST 中的 Expression 节点(表达式)
+  //和Statement节点(语句)。Expression (表达式)中包含了常见的变量声明、运算、判断、函数调用，而Statement(语句)
+  // 中包含了控制流(if-else , Loop等)、内存管理、赋值等操作。在 target/source/codegen_c.cc 中对每一种AST 节点
+  // 进行对应的代码生成(定向到一个文件输出流中)
+
+  // 其他类型的Codegen 比如CUDA，LLVM IR 等的原理都是一样的，只不过根据target 的不同AST Node翻译的目标代码语句的语法有一点区别而已
   // expression
   void VisitExpr_(const VarNode* op, std::ostream& os) override;         // NOLINT(*)
   void VisitExpr_(const BufferLoadNode* op, std::ostream& os) override;  // NOLINT(*)
