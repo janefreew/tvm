@@ -34,3 +34,6 @@
 [submodule "gallery/yc_learning/tvm-book"]
 	path = gallery/yc_learning/tvm-book
 	url = git@github.com:janefreew/tvm-book.git
+[submodule "gallery/mlc_learn"]
+	path = gallery/mlc_learn
+	url = git@github.com:janefreew/mlc_learn.git
